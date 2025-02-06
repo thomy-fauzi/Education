@@ -13,6 +13,12 @@
       </div>
     <h2>Add New Course</h2>
     <br>
+    <% if(err){ %>
+        <% err.split(",").map(function(el){ %>
+            <h3 style="color: red;"><%= el %></h3>
+        <% }) %> 
+    <% } %>
+    <br>
     <form action="/admin/add-course" method="POST">
         <div>
             <label for="exampleFormControlInput1" class="form-label">Name</label><br>

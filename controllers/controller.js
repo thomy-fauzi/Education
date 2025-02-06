@@ -86,8 +86,9 @@ class Controller {
 
     static async formAddCourse(req, res) {
         try{
+            let err = req.query.errors
             const categories = await Category.findAll()
-            res.render("admin/addCourse", { categories })
+            res.render("admin/addCourse", { categories, err })
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -102,8 +103,15 @@ class Controller {
             await newCourse.capitalizeName()
             res.redirect("/admin")
         } catch(err) {
-            console.log(err)
-            res.send(err)
+            if(err.name === "SequelizeValidationError"){
+                const error = err.errors.map(function(el){
+                    return el.message
+                })
+                res.redirect(`/admin/add-course?errors=${error}`)
+            }else{
+                // console.log(err);
+                res.send(err)
+            }
         }
     }
 
