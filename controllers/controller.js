@@ -1,6 +1,8 @@
 const { where } = require("sequelize")
+const {Op} = require("sequelize")
 const { Category, Course, Profile, User, UserCourse } = require("../models")
 const formatTanggal = require("../helpers/formatDate")
+const { format } = require("sequelize/lib/utils")
 
 class Controller {
 
@@ -170,7 +172,9 @@ class Controller {
 
     static async home(req, res) {
         try{
-            res.render("home")
+            const category = await Category.findAll()
+            res.render("./users/home", { category })
+            // res.render("home")
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -179,7 +183,19 @@ class Controller {
 
     static async allCourse(req, res) {
         try{
+            const {name, age} = req.query
 
+            const options = {
+                where: {}
+            };
+
+            if (name) {
+                options.where.name = {
+                    [Op.iLike]: `%${name}%`
+                };
+            }
+            const data = await Course.findAll(options)
+            res.render("./users/showCourses", { data, formatTanggal })
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -197,7 +213,21 @@ class Controller {
 
     static async courseList(req, res) {
         try{
+            const { categoryId } = req.params
+            const data = await Category.findOne({
+                where: { id: categoryId },
+                include: [
+                    {
+                        model: Course,
+                        include: {
+                            model: UserCourse
+                        }
+                    }
+                ]
 
+            })
+            // res.send(data)
+            res.render("./users/courseList", { data, formatTanggal })
         } catch(err) {
             console.log(err)
             res.send(err)
