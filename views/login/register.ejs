@@ -3,55 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Register</title>
+    <style>
+        body {
+            background-color: #e9f5fb;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .register-container {
+            background-color: #ffffff;
+            padding: 30px;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .register-container h1 {
+            text-align: center;
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .register-container label {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .register-container input[type="text"],
+        .register-container input[type="password"],
+        .register-container select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 18px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .register-container input[type="submit"] {
+            width: 100%;
+            padding: 14px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .register-container input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .register-container .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .register-container .footer a {
+            color: #007bff; 
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .register-container .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>register</h1>
-
-    <form action="/register" method="POST">
-        <div>
-            <label>fullName</label>
+    <div class="register-container">
+        <h1>Create Account</h1>
+        <form action="/register" method="POST">
             <div>
-                <input type="text" name="fullName"/>
+                <label for="fullName">Full Name</label>
+                <input type="text" name="fullName" id="fullName" required placeholder="Enter your full name"/>
             </div>
-        </div>
-        <div>
-            <label>username</label>
             <div>
-                <input type="text" name="username"/>
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" required placeholder="Enter your username"/>
             </div>
-        </div>
-        <div>
-            <label>password</label>
             <div>
-                <input type="password" name="password"/>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required placeholder="Enter your password"/>
             </div>
-        </div>
-        <div>
-            <label>Age</label>
             <div>
-                <input type="text" name="age"/>
+                <label for="age">Age</label>
+                <input type="text" name="age" id="age" required placeholder="Enter your age"/>
             </div>
-        </div>
-        <div>
-            <label>Image URL</label>
             <div>
-                <input type="text" name="imageURL"/>
+                <label for="imageURL">Image URL</label>
+                <input type="text" name="imageURL" id="imageURL" placeholder="Enter your profile image URL"/>
             </div>
-        </div>
-        <div>
-            <label>role</label>
             <div>
-                <select name="role">
+                <label for="role">Role</label>
+                <select name="role" id="role" required>
                     <option value="admin">Admin</option>
                     <option value="user">User</option>
                 </select>
             </div>
+            <input type="submit" value="Create Account" />
+        </form>
+        <div class="footer">
+            <p>Already have an account? <a href="/">Login here</a></p>
         </div>
-        <div>
-            <a href="/">login</a>
-        </div>
-        <input type="submit" value="SUBMIT" />
-    </form>
+    </div>
 </body>
 </html>

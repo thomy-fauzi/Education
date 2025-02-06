@@ -1,29 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background: linear-gradient(to right, #00bcd4, #1e88e5);
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #0288d1;
+        }
+
+        .container {
+            padding: 30px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .profile-info {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .profile-info h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .profile-info form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-info div {
+            margin-bottom: 15px;
+        }
+
+        .profile-info label {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .profile-info input {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .profile-info button {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            background-color: #0288d1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .profile-info button:hover {
+            background-color: #0277bd;
+        }
+
+        .profile-img {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-img img {
+            width: 80%;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+    </style>
 </head>
+
 <body>
-    <h1>Edit Profile</h1>
-    <form action="/user/profile/edit/<%= data.id %>" method="POST">
-        <div>
-            <label>Full Name</label>
-            <input type="text" name="fullName" value="<%= data.fullName %>" required>
+    <div class="navbar">
+        <a href="/user">Home</a>
+        <a href="/user/course">Course</a>
+        <a href="/user/profile">User Profile</a>
+        <a href="/logout">LogOut</a>
+    </div>
+
+    <div class="container">
+        <div class="profile-info">
+            <h1>Edit Profile</h1>
+            <form action="/user/profile/edit/<%= data.id %>" method="POST">
+                <div>
+                    <label>Full Name</label>
+                    <input type="text" name="fullName" value="<%= data.fullName %>" required>
+                </div>
+                <div>
+                    <label>Age</label>
+                    <input type="number" name="age" value="<%= data.age %>" required>
+                </div>
+                <div>
+                    <label>Profile Image URL</label>
+                    <input type="text" name="imgURL" value="<%= data.imgURL %>">
+                    <% if(data.imgURL) { %>
+                        <img src="<%= data.imgURL %>" width="100">
+                    <% } %>
+                </div>
+                <button type="submit">Update Profile</button>
+            </form>
         </div>
-        <div>
-            <label>Age</label>
-            <input type="number" name="age" value="<%= data.age %>" required>
+
+        <div class="profile-img">
+            <img src="<%= data.imgURL %>" alt="Profile Image">
         </div>
-        <div>
-            <label>Profile Image URL</label>
-            <input type="text" name="imgURL" value="<%= data.imgURL %>">
-            <% if(data.imgURL) { %>
-                <img src="<%= data.imgURL %>" width="100">
-            <% } %>
-        </div>
-        <button type="submit">Update Profile</button>
-    </form>
+    </div>
 </body>
+
 </html>

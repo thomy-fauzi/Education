@@ -1,52 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background: linear-gradient(to right, #00bcd4, #1e88e5);
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #0288d1;
+        }
+
+        .container {
+            padding: 30px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .profile-img {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .profile-info {
+            flex: 2;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .profile-info h1 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .profile-info a {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #0288d1;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .profile-info a:hover {
+            background-color: #0277bd;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #0288d1;
+            color: white;
+        }
+
+        td {
+            background-color: white;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #00bcd4;
+            color: white;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
 </head>
+
 <body>
-    <div style="background-color: rgb(216, 216, 216); padding: 10px;">
+    <div class="navbar">
         <a href="/user">Home</a>
         <a href="/user/course">Course</a>
         <a href="/user/profile">User Profile</a>
+        <a href="/logout">LogOut</a>
     </div>
-    <h1>profile</h1>
 
-    <div style="display: flex; column-count: 2;">
-        <div>
-            <img src="<%= data.imgURL %>" width="80%" />
-        </div>
-        <div>
-            <div>
-                <h1>Full Name: <%= data.fullName %></h1>
-                <h1>age: <%= data.age %></h1>
-            </div>
+    <div class="container">
+        <div class="profile-info" style="flex: 1;">
+            <h1>Full Name: <%= data.fullName %></h1>
+            <h1>Age: <%= data.age %></h1>
+
             <a href="/user/profile/edit/<%= data.id %>">Edit Profile</a>
-            <table border="1">
-                <tr>
-                    <th scope="col">No</th>
-                    <th scope="col">Nama</th>
-                    <th scope="col">Descripsi</th>
-                    <th scope="col">Durasi Bimbingan</th>
-                    <th scope="col">Tanggal Update</th>
-                    <th scope="col">Action</th>
-                </tr>
-                <% userCourses.forEach((userCourse, index) => { %>
+
+            <table>
+                <thead>
                     <tr>
-                        <td><%= index + 1 %></td>
-                        <td><%= userCourse.Course.name %></td>
-                        <td><%= userCourse.Course.description %></td>
-                        <td><%= userCourse.Course.duration %></td>
-                        <td><%= formatTanggal(userCourse.Course.updatedAt) %></td>
-                        <td>
-                            <a href="/user/profile/<%= userCourse.CourseId %>/delete">Delete</a>
-                        </td>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Duration</th>
+                        <th>Updated At</th>
+                        <th>Action</th>
                     </tr>
-                <% }) %>
+                </thead>
+                <tbody>
+                    <% userCourses.forEach((userCourse, index) => { %>
+                        <tr>
+                            <td><%= index + 1 %></td>
+                            <td><%= userCourse.Course.name %></td>
+                            <td><%= userCourse.Course.description %></td>
+                            <td><%= userCourse.Course.duration %></td>
+                            <td><%= formatTanggal(userCourse.Course.updatedAt) %></td>
+                            <td>
+                                <a href="/user/profile/<%= userCourse.CourseId %>/delete" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
             </table>
         </div>
-        
+
+        <div class="profile-img" style="flex: 1; padding: 20px;">
+            <img src="<%= data.imgURL %>" width="80%" />
+        </div>
     </div>
+
+    <footer>
+        &copy; Education
+    </footer>
+
 </body>
+
 </html>

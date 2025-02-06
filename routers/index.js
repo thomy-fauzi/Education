@@ -20,6 +20,15 @@ router.use(function (req, res, next) {
     }
 })
 
+router.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).send('Logout gagal');
+      }
+      res.redirect('/login');
+    });
+  });
+
 router.use("/admin", admin)
 router.use("/user", user)
 

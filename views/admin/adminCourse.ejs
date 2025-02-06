@@ -5,34 +5,137 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+
+    .navbar {
+      background: linear-gradient(to right, #00bcd4, #1e88e5);
+      padding: 15px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .navbar a:hover {
+      background-color: #0288d1;
+    }
+
+    .container {
+      padding: 30px;
+    }
+
+    h1 {
+      color: #333;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    a.add-course-btn {
+      background-color: #00bcd4;
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    a.add-course-btn:hover {
+      background-color: #0288d1;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #00bcd4; 
+      color: white;
+    }
+
+    td {
+      background-color: #f9f9f9;
+    }
+
+    td a {
+      color: #1e88e5;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    td a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      background-color: #00bcd4;
+      color: white;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
+  </style>
 </head>
 
 <body>
-  <div style="background-color: rgb(216, 216, 216); padding: 10px;">
+
+  <div class="navbar">
     <a href="/admin">Home</a>
-    <a href="/admin/course">list course</a>
-    <a href="/admin/add-category">add category</a>
+    <a href="/admin/course">List Course</a>
+    <a href="/admin/add-category">Add Category</a>
+    <a href="/logout">LogOut</a>
   </div>
-  <h1>Daftar Course</h1>
 
-  <a href="/admin/add-course">add course</a>
+  <div class="container">
+    <h1>Daftar Course</h1>
 
-  <table border="1">
-    <thead>
-      <tr>
-        <th scope="col">No</th>
-        <th scope="col">Nama</th>
-        <th scope="col">Descripsi</th>
-        <th scope="col">Durasi Bimbingan</th>
-        <th scope="col">Tanggal Update</th>
-        <th scope="col">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% courses.map(function(el, i) { %>
+    <a href="/admin/add-course" class="add-course-btn">Add Course</a>
+
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">No</th>
+          <th scope="col">Nama</th>
+          <th scope="col">Deskripsi</th>
+          <th scope="col">Durasi Bimbingan</th>
+          <th scope="col">Tanggal Update</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% courses.map(function(el, i) { %>
         <tr>
           <th scope="row">
-            <%= i+1 %>
+            <%= i + 1 %>
           </th>
           <td>
             <%= el.name %>
@@ -47,14 +150,19 @@
             <%= formatTanggal(el.updatedAt) %>
           </td>
           <td>
-            <a href="/admin/<%= el.id %>/edit" button type="button"><button
-                class="btn btn btn-primary">Edit</button></a>
-            <a href="/admin/<%= el.id %>/delete" button type="button"><button class="btn btn-danger">Delete</button></a>
+            <a href="/admin/<%= el.id %>/edit"><button class="btn btn-primary" style="background-color: #0288d1; color: white; border: none; padding: 8px 16px; border-radius: 5px;">Edit</button></a>
+            <a href="/admin/<%= el.id %>/delete"><button class="btn btn-danger" style="background-color: #d32f2f; color: white; border: none; padding: 8px 16px; border-radius: 5px;">Delete</button></a>
           </td>
         </tr>
         <% }) %>
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    &copy; Education
+  </footer>
+
 </body>
 
 </html>

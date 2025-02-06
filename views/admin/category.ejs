@@ -5,36 +5,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        .navbar {
+            background: linear-gradient(to right, #00bcd4, #1e88e5);
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #0288d1;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #00bcd4;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        td a {
+            color: #1e88e5; 
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #00bcd4;
+            color: white;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
 </head>
 
 <body>
-    <div style="background-color: rgb(216, 216, 216); padding: 10px;">
-        <a href="/admin">Home</a>
-        <a href="/admin/course">list course</a>
-        <a href="/admin/add-category">add category</a>
-    </div>
-    <h1>List Category</h1>
-    <table border="1">
-        <tr>
-            <td>no</td>
-            <td>Name</td>
-            <td>action</td>
-        </tr>
 
-        <% category.forEach((el, idx)=> { %>
+    <div class="navbar">
+        <a href="/admin">Home</a>
+        <a href="/admin/course">List Course</a>
+        <a href="/admin/add-category">Add Category</a>
+        <a href="/logout">LogOut</a>
+    </div>
+
+    <div class="container">
+        <h1>List Category</h1>
+        <table>
             <tr>
-                <td>
-                    <%= idx+1 %>
-                </td>
-                <td>
-                    <%= el.name %>
-                </td>
-                <td>
-                    <a href="/admin/category/<%= el.id %>">detail</a>
-                </td>
+                <th>No</th>
+                <th>Name</th>
+                <th>Action</th>
             </tr>
-        <% }) %>
-    </table>
+
+            <% category.forEach((el, idx) => { %>
+            <tr>
+                <td><%= idx + 1 %></td>
+                <td><%= el.name %></td>
+                <td><a href="/admin/category/<%= el.id %>">Detail</a></td>
+            </tr>
+            <% }) %>
+        </table>
+    </div>
+
+    <footer>
+        &copy; Education
+    </footer>
+
 </body>
 
 </html>

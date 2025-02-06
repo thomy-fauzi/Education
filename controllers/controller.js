@@ -264,7 +264,8 @@ class Controller {
             const data = await Profile.findOne({
                 where: { UserId: id },
                 include: [
-                    User,
+                    // User,
+
                     {
                         model: User,
                         include: [
@@ -278,7 +279,7 @@ class Controller {
             })
 
             const userCourses = data.User.UserCourses || []
-
+            // console.log(data, id)
             res.render("users/profile", {
                 data,
                 userCourses,
@@ -308,7 +309,7 @@ class Controller {
             let userCourse = getUserId(data.Courses)
             res.render("./users/courseList", { data, formatTanggal, userCourse, id: req.session.userId })
         } catch(err) {
-            // console.log(err)
+            console.log(err)
             res.send(err)
         }
     }
@@ -374,7 +375,6 @@ class Controller {
         const { userId } = req.session;
     
         try {
-            // Cari course berdasarkan ID
             const result = await Course.findOne({
                 where: { id: courseId },
                 include: {
@@ -382,25 +382,16 @@ class Controller {
                 },
             });
     
-            // Jika tidak ditemukan course
-            if (!result) {
-                return res.status(404).send('Course not found');
-            }
-    
-            // Buat relasi antara user dan course
             const data = await UserCourse.create({
                 UserId: userId,
                 CourseId: courseId,
             });
             // console.log(data, userId, courseId)
     
-    
-            // Redirect ke halaman kategori
             res.redirect(`/user/category/${result.CategoryId}`);
         } catch (err) {
-            // Menangani error
             console.error(err);
-            res.status(500).send('Internal Server Error');
+            res.send(err)
         }
     }
 }
