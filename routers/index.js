@@ -10,6 +10,16 @@ router.post("/", Controller.login)
 router.get("/register", Controller.registerForm)
 router.post("/register", Controller.register)
 
+router.use(function (req, res, next) {
+    console.log(req.session)
+    if (!req.session.userId) {
+        const error = "Please login"
+        res.redirect(`/?error=${error}`)
+    } else {
+        next()
+    }
+})
+
 router.use("/admin", admin)
 router.use("/user", user)
 

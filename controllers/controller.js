@@ -2,6 +2,7 @@ const { where } = require("sequelize")
 const {Op} = require("sequelize")
 const { Category, Course, Profile, User, UserCourse } = require("../models")
 const formatTanggal = require("../helpers/formatDate")
+const bcrypt = require("bcryptjs")
 const { format } = require("sequelize/lib/utils")
 
 class Controller {
@@ -9,7 +10,7 @@ class Controller {
     // for admin
     static async loginForm(req, res) {
         try{
-            res.render("login")
+            res.render("login/login")
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -18,7 +19,32 @@ class Controller {
 
     static async login(req, res) {
         try{
+            const { username, password } = req.body
 
+            const user = await User.findOne({
+                where: {
+                    username
+                }
+            })
+
+            if(user) {
+                const isValidPassword = bcrypt.compareSync(password, user.password)
+
+                if (isValidPassword) {
+
+                    req.session.userId = user.id
+
+                    if (user.role === "admin") {
+                        console.log("redirect ke /admin")
+                        return res.redirect("/admin")
+                    } else if(user.role === "user") {
+                        console.log("redirect ke /user")
+                        return res.redirect("/user")
+                    }
+                } else {
+                    return res.redirect("/")
+                }
+            }
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -27,7 +53,7 @@ class Controller {
 
     static async registerForm(req, res) {
         try{
-
+            res.render("login/register")
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -36,7 +62,15 @@ class Controller {
 
     static async register(req, res) {
         try{
+            const { username, password, role } = req.body
 
+            const data = await User.create({
+                username,
+                password,
+                role
+            })
+
+            res.redirect("/")
         } catch(err) {
             console.log(err)
             res.send(err)
