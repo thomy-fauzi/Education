@@ -2,9 +2,10 @@ const { Controller } = require("../controllers/controller")
 const express = require('express')
 const router = express.Router()
 
-router.get('/', Controller.showCourse)
 
-router.get('/category', Controller.showCategory)
+router.get('/', Controller.showCategory)
+
+router.get('/course', Controller.showCourse)
 router.get('/category/:categoryId', Controller.showCategoryById)
 
 router.get('/add-course', Controller.formAddCourse)

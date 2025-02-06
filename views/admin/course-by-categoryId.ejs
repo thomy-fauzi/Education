@@ -6,8 +6,14 @@
     <title>Document</title>
 </head>
 <body>
+    <div style="background-color: rgb(216, 216, 216); padding: 10px;">
+        <a href="/admin">Home</a>
+        <a href="/admin/course">list course</a>
+        <a href="/admin/add-category">add category</a>
+      </div>
     <h1>list Course</h1>
-
+    
+    <% if (course) { %>
     <table border="1" >
         <tr>
             <td>Name</td>
@@ -22,5 +28,9 @@
             <td><%= formatTanggal(course.createdAt) %></td>
         </tr>
     </table>
+    <% } else { %>
+        <h3>tidak ada course di category ini</h3>
+    <% } %>
+   
 </body>
 </html>
