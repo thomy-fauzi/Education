@@ -1,5 +1,5 @@
 const { where } = require("sequelize")
-const {Op} = require("sequelize")
+const { Op } = require("sequelize")
 const { Category, Course, Profile, User, UserCourse } = require("../models")
 const formatTanggal = require("../helpers/formatDate")
 const getUserCourse = require("../helpers/getUserCourse")
@@ -11,16 +11,16 @@ class Controller {
 
     // for admin
     static async loginForm(req, res) {
-        try{
+        try {
             res.render("login/login")
-        } catch(err) {
-            // console.log(err)
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
 
     static async login(req, res) {
-        try{
+        try {
             const { username, password } = req.body
 
             const user = await User.findOne({
@@ -29,7 +29,7 @@ class Controller {
                 }
             })
 
-            if(user) {
+            if (user) {
                 const isValidPassword = bcrypt.compareSync(password, user.password)
 
                 if (isValidPassword) {
@@ -49,17 +49,17 @@ class Controller {
                     return res.redirect("/")
                 }
             }
-        } catch(err) {
-            // console.log(err)
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
 
     static async registerForm(req, res) {
-        try{
+        try {
             res.render("login/register")
-        } catch(err) {
-            // console.log(err)
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
@@ -83,36 +83,36 @@ class Controller {
             }
 
             res.redirect("/")
-        } catch(err) {
-            // console.log(err)
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
 
     static async showCourse(req, res) {
-        try{
+        try {
             const courses = await Course.findAll({
                 include: [Category]
             })
             res.render("admin/adminCourse", { courses, formatTanggal })
-        } catch(err) {
-            // console.log(err)
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
 
     static async showCategory(req, res) {
-        try{
+        try {
             const category = await Category.findAll()
             res.render("admin/category", { category })
-        } catch(err) {
-            // console.log(err)
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
 
     static async showCategoryById(req, res) {
-        try{
+        try {
             const { categoryId } = req.params
 
             const course = await Course.findOne({
@@ -124,37 +124,37 @@ class Controller {
             // const date = formatTanggal(course.createdAt)
 
             res.render("admin/course-by-categoryId", { course, formatTanggal })
-        } catch(err) {
-            // console.log(err)
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
 
     static async formAddCourse(req, res) {
-        try{
+        try {
             let err = req.query.errors
             const categories = await Category.findAll()
             res.render("admin/addCourse", { categories, err })
-        } catch(err) {
-            // console.log(err)
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
 
     static async postAddCourse(req, res) {
-        try{
-            const {name, CategoryId, duration, description } = req.body
+        try {
+            const { name, CategoryId, duration, description } = req.body
 
             const newCourse = await Course.create({ name, CategoryId, duration, description })
             await newCourse.capitalizeName()
             res.redirect("/admin")
-        } catch(err) {
-            if(err.name === "SequelizeValidationError"){
-                const error = err.errors.map(function(el){
+        } catch (err) {
+            if (err.name === "SequelizeValidationError") {
+                const error = err.errors.map(function (el) {
                     return el.message
                 })
                 res.redirect(`/admin/add-course?errors=${error}`)
-            }else{
+            } else {
                 console.log(err);
                 res.send(err)
             }
@@ -162,64 +162,64 @@ class Controller {
     }
 
     static async renderAddCategory(req, res) {
-        try{
+        try {
             res.render("admin/form-add-category")
-        } catch(err) {
-            // console.log(err)
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
 
     static async postAddCategory(req, res) {
-        try{
+        try {
             const { name } = req.body
             await Category.create({
                 name
             })
 
             res.redirect("/admin")
-        } catch(err) {
-            // console.log(err)
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
 
     static async formEditCourse(req, res) {
-        try{
+        try {
             const { id } = req.params
             const course = await Course.findByPk(id)
             const categories = await Category.findAll()
-            res.render("admin/editCourse", { course, categories})
-        } catch(err) {
-            // console.log(err)
+            res.render("admin/editCourse", { course, categories })
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
 
     static async postEditCourse(req, res) {
-        try{
+        try {
             const { id } = req.params
             const { name, CategoryId, duration, description } = req.body
             // console.log(req.body)
             Course.update({ name, CategoryId, duration, description }, {
                 where: { id }
             })
-        res.redirect("/admin")
-        } catch(err) {
-            // console.log(err)
+            res.redirect("/admin")
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
 
     static async deleteCourse(req, res) {
-        try{
+        try {
             const { id } = req.params
             Course.destroy({
                 where: { id }
             })
-        res.redirect("/admin")
-        } catch(err) {
-            // console.log(err)
+            res.redirect("/admin")
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
@@ -227,19 +227,19 @@ class Controller {
     // for user
 
     static async home(req, res) {
-        try{
+        try {
             const category = await Category.findAll()
             res.render("./users/home", { category })
             // res.render("home")
-        } catch(err) {
-            // console.log(err)
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
 
     static async allCourse(req, res) {
-        try{
-            const {name} = req.query
+        try {
+            const { name } = req.query
 
             const options = {
                 where: {}
@@ -252,23 +252,46 @@ class Controller {
             }
             const data = await Course.findAll(options)
             res.render("./users/showCourses", { data, formatTanggal })
-        } catch(err) {
-            // console.log(err)
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
 
     static async profile(req, res) {
-        try{
+        try {
+            const id = req.session.userId
+            const data = await Profile.findOne({
+                where: { UserId: id },
+                include: [
+                    User,
+                    {
+                        model: User,
+                        include: [
+                            {
+                                model: UserCourse,
+                                include: [Course]
+                            }
+                        ]
+                    }
+                ]
+            })
 
-        } catch(err) {
-            // console.log(err)
+            const userCourses = data.User.UserCourses || []
+
+            res.render("users/profile", {
+                data,
+                userCourses,
+                formatTanggal
+            })
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
 
     static async courseList(req, res) {
-        try{
+        try {
             const { categoryId } = req.params
             const data = await Category.findOne({
                 where: { id: categoryId },
@@ -291,28 +314,57 @@ class Controller {
     }
 
     static async editProfileForm(req, res) {
-        try{
+        try {
+            const id = req.session.userId
+            const data = await Profile.findOne({
+                where: { UserId: id }
+            })
 
-        } catch(err) {
-            // console.log(err)
+            res.render("users/edit-profile", { data })
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
 
     static async editProfile(req, res) {
-        try{
-
-        } catch(err) {
-            // console.log(err)
+        try {
+            const id = req.session.userId
+            const { fullName, age, imgURL } = req.body
+    
+            await Profile.update(
+                {
+                    fullName,
+                    age,
+                    imgURL
+                },
+                {
+                    where: { UserId: id }
+                }
+            )
+    
+            res.redirect('/user/profile')
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
 
     static async deleteCourseUser(req, res) {
-        try{
+        try {
+            const { courseId } = req.params
+            const userId = req.session.userId
 
-        } catch(err) {
-            // console.log(err)
+            await UserCourse.destroy({
+                where: {
+                    UserId: userId,
+                    CourseId: courseId
+                }
+            })
+
+            res.redirect('/user/profile')
+        } catch (err) {
+            console.log(err)
             res.send(err)
         }
     }
