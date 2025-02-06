@@ -185,7 +185,7 @@ class Controller {
 
     static async allCourse(req, res) {
         try{
-            const {name, age} = req.query
+            const {name} = req.query
 
             const options = {
                 where: {}
