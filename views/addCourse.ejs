@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Course</title>
+</head>
+<body>
+    <h2>Add New Course</h2>
+    <br>
+    <form action="/admin/add-course" method="POST">
+        <div>
+            <label for="exampleFormControlInput1" class="form-label">Name</label><br>
+            <input type="text" name="name" placeholder="name">
+        </div>
+        <div>
+            <br>
+            <label>Category</label><br>
+            <select name="CategoryId">
+                <option disable selected>---Pilih Kategori---</option>
+                <% categories.map(function(el){ %>
+                    <option value="<%= el.id %>"><%= el.name %></option>
+                <% }) %>
+            </select>
+        </div>
+        <div>
+            <br>
+            <label>Duration</label><br>
+            <input type="text" name="duration" placeholder="Durasi Bimbingan">
+        </div>
+
+        <div>
+            <br>
+            <label>Description</label><br>
+            <input type="text" name="description" placeholder="Input Deskripsi">
+        </div>
+        <div>
+            <br>
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</body>
+</html>

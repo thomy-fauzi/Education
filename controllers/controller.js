@@ -46,7 +46,7 @@ class Controller {
             const courses = await Course.findAll({
                 include: [Category]
             })
-            res.render("adminCourse", { courses, formatDate })
+            res.render("adminCourse", { courses, formatTanggal })
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -84,7 +84,8 @@ class Controller {
 
     static async formAddCourse(req, res) {
         try{
-
+            const categories = await Category.findAll()
+            res.render("addCourse", { categories })
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -93,7 +94,9 @@ class Controller {
 
     static async postAddCourse(req, res) {
         try{
-
+            const {name, CategoryId, duration, description } = req.body
+            Course.create({ name, CategoryId, duration, description })
+            res.redirect("/admin")
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -125,7 +128,10 @@ class Controller {
 
     static async formEditCourse(req, res) {
         try{
-
+            const { id } = req.params
+            const course = await Course.findByPk(id)
+            const categories = await Category.findAll()
+            res.render("editCourse", { course, categories})
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -134,7 +140,13 @@ class Controller {
 
     static async postEditCourse(req, res) {
         try{
-
+            const { id } = req.params
+            const { name, CategoryId, duration, description } = req.body
+            console.log(req.body)
+            Course.update({ name, CategoryId, duration, description }, {
+                where: { id }
+            })
+        res.redirect("/admin")
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -143,7 +155,11 @@ class Controller {
 
     static async deleteCourse(req, res) {
         try{
-
+            const { id } = req.params
+            Course.destroy({
+                where: { id }
+            })
+        res.redirect("/admin")
         } catch(err) {
             console.log(err)
             res.send(err)

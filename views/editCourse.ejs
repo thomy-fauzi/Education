@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Course</title>
+</head>
+<body>
+    <h2>Edit Course</h2>
+    <br>
+    <form action="/admin/<%= course.id %>/edit" method="POST">
+        <div>
+            <label for="exampleFormControlInput1" class="form-label">Name</label><br>
+            <input type="text" name="name" placeholder="name" value="<%= course.name %>">
+        </div>
+        <div>
+            <br>
+            <label>Category</label><br>
+            <select name="CategoryId">
+                <option disabled selected>---Pilih Kategori---</option>
+                <% categories.forEach((el) => { %>
+                    <% if (course.CategoryId === el.id) { %>
+                        <option value="<%= el.id %>" selected><%= el.name %></option>
+                    <% } else { %>
+                        <option value="<%= el.id %>"><%= el.name %></option>
+                    <% } %>
+                <% }) %>
+            </select>
+        </div>
+        <div>
+            <br>
+            <label>Duration</label><br>
+            <input type="text" name="duration" placeholder="Durasi Bimbingan" value="<%= course.duration %>">
+        </div>
+
+        <div>
+            <br>
+            <label>Description</label><br>
+            <input type="text" name="description" placeholder="Input Deskripsi" value="<%= course.description %>">
+        </div>
+        <div>
+            <br>
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</body>
+</html>
