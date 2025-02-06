@@ -1,4 +1,6 @@
+const { where } = require("sequelize")
 const { Category, Course, Profile, User, UserCourse } = require("../models")
+const formatTanggal = require("../helpers/formatDate")
 
 class Controller {
 
@@ -50,7 +52,8 @@ class Controller {
 
     static async showCategory(req, res) {
         try{
-
+            const category = await Category.findAll()
+            res.render("category", { category })
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -59,7 +62,17 @@ class Controller {
 
     static async showCategoryById(req, res) {
         try{
+            const { categoryId } = req.params
 
+            const course = await Course.findOne({
+                where: {
+                    id: categoryId
+                }
+            })
+            console.log(course.createdAt)
+            // const date = formatTanggal(course.createdAt)
+
+            res.render("course-by-categoryId", { course, formatTanggal })
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -86,7 +99,7 @@ class Controller {
 
     static async renderAddCategory(req, res) {
         try{
-
+            res.render("form-add-category")
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -95,7 +108,12 @@ class Controller {
 
     static async postAddCategory(req, res) {
         try{
+            const { name } = req.body
+            await Category.create({
+                name
+            })
 
+            res.redirect("/admin/category")
         } catch(err) {
             console.log(err)
             res.send(err)
