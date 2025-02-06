@@ -2,8 +2,10 @@ const { where } = require("sequelize")
 const {Op} = require("sequelize")
 const { Category, Course, Profile, User, UserCourse } = require("../models")
 const formatTanggal = require("../helpers/formatDate")
+const getUserCourse = require("../helpers/getUserCourse")
 const bcrypt = require("bcryptjs")
 const { format } = require("sequelize/lib/utils")
+const getUserId = require("../helpers/getUserCourse")
 
 class Controller {
 
@@ -12,7 +14,7 @@ class Controller {
         try{
             res.render("login/login")
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
@@ -35,10 +37,12 @@ class Controller {
                     req.session.userId = user.id
 
                     if (user.role === "admin") {
-                        console.log("redirect ke /admin")
+                        req.session.role = "admin"
+                        // console.log("redirect ke /admin")
                         return res.redirect("/admin")
                     } else if(user.role === "user") {
-                        console.log("redirect ke /user")
+                        req.session.role = "user"
+                        // console.log("redirect ke /user")
                         return res.redirect("/user")
                     }
                 } else {
@@ -46,7 +50,7 @@ class Controller {
                 }
             }
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
@@ -55,24 +59,32 @@ class Controller {
         try{
             res.render("login/register")
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
 
     static async register(req, res) {
         try{
-            const { username, password, role } = req.body
+            const { username, password, role, fullName, imgURL, age } = req.body
 
             const data = await User.create({
                 username,
                 password,
                 role
             })
+            if (data){
+                await Profile.create({
+                    fullName,
+                    imgURL,
+                    age,
+                    UserId: data.id
+                })
+            }
 
             res.redirect("/")
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
@@ -84,7 +96,7 @@ class Controller {
             })
             res.render("admin/adminCourse", { courses, formatTanggal })
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
@@ -94,7 +106,7 @@ class Controller {
             const category = await Category.findAll()
             res.render("admin/category", { category })
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
@@ -108,12 +120,12 @@ class Controller {
                     CategoryId: categoryId
                 }
             })
-            console.log(course)
+            // console.log(course)
             // const date = formatTanggal(course.createdAt)
 
             res.render("admin/course-by-categoryId", { course, formatTanggal })
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
@@ -124,7 +136,7 @@ class Controller {
             const categories = await Category.findAll()
             res.render("admin/addCourse", { categories, err })
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
@@ -143,7 +155,7 @@ class Controller {
                 })
                 res.redirect(`/admin/add-course?errors=${error}`)
             }else{
-                // console.log(err);
+                console.log(err);
                 res.send(err)
             }
         }
@@ -153,7 +165,7 @@ class Controller {
         try{
             res.render("admin/form-add-category")
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
@@ -167,7 +179,7 @@ class Controller {
 
             res.redirect("/admin")
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
@@ -179,7 +191,7 @@ class Controller {
             const categories = await Category.findAll()
             res.render("admin/editCourse", { course, categories})
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
@@ -188,13 +200,13 @@ class Controller {
         try{
             const { id } = req.params
             const { name, CategoryId, duration, description } = req.body
-            console.log(req.body)
+            // console.log(req.body)
             Course.update({ name, CategoryId, duration, description }, {
                 where: { id }
             })
         res.redirect("/admin")
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
@@ -207,7 +219,7 @@ class Controller {
             })
         res.redirect("/admin")
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
@@ -220,7 +232,7 @@ class Controller {
             res.render("./users/home", { category })
             // res.render("home")
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
@@ -241,7 +253,7 @@ class Controller {
             const data = await Course.findAll(options)
             res.render("./users/showCourses", { data, formatTanggal })
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
@@ -250,7 +262,7 @@ class Controller {
         try{
 
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
@@ -270,10 +282,10 @@ class Controller {
                 ]
 
             })
-            // res.send(data)
-            res.render("./users/courseList", { data, formatTanggal })
+            let userCourse = getUserId(data.Courses)
+            res.render("./users/courseList", { data, formatTanggal, userCourse, id: req.session.userId })
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
@@ -282,7 +294,7 @@ class Controller {
         try{
 
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
@@ -291,7 +303,7 @@ class Controller {
         try{
 
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
@@ -300,17 +312,43 @@ class Controller {
         try{
 
         } catch(err) {
-            console.log(err)
+            // console.log(err)
             res.send(err)
         }
     }
 
     static async buy(req, res) {
-        try{
-
-        } catch(err) {
-            console.log(err)
-            res.send(err)
+        const  courseId  = +req.params.courseId;
+        const { userId } = req.session;
+    
+        try {
+            // Cari course berdasarkan ID
+            const result = await Course.findOne({
+                where: { id: courseId },
+                include: {
+                    model: UserCourse,
+                },
+            });
+    
+            // Jika tidak ditemukan course
+            if (!result) {
+                return res.status(404).send('Course not found');
+            }
+    
+            // Buat relasi antara user dan course
+            const data = await UserCourse.create({
+                UserId: userId,
+                CourseId: courseId,
+            });
+            // console.log(data, userId, courseId)
+    
+    
+            // Redirect ke halaman kategori
+            res.redirect(`/user/category/${result.CategoryId}`);
+        } catch (err) {
+            // Menangani error
+            console.error(err);
+            res.status(500).send('Internal Server Error');
         }
     }
 }

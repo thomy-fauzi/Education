@@ -32,8 +32,13 @@
                       <td><%= el.description %></td>
                       <td><%= el.duration %></td>
                       <td><%= formatTanggal(el.updatedAt) %></td>
+                      
                       <td>
-                  
+                        <% if(!userCourse.includes(id)){ %>
+                          <a href="/user/<%= el.id %>/buy" button type="button"><button>Add Course</button></a>
+                        <% }else{ %> 
+                          <p>Already Bought</p>
+                        <% } %>
                       </td>
                     </tr>
                 <% }) %> 
