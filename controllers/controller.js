@@ -43,7 +43,10 @@ class Controller {
 
     static async showCourse(req, res) {
         try{
-
+            const courses = await Course.findAll({
+                include: [Category]
+            })
+            res.render("adminCourse", { courses, formatDate })
         } catch(err) {
             console.log(err)
             res.send(err)
