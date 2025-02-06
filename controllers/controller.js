@@ -97,7 +97,9 @@ class Controller {
     static async postAddCourse(req, res) {
         try{
             const {name, CategoryId, duration, description } = req.body
-            Course.create({ name, CategoryId, duration, description })
+
+            const newCourse = await Course.create({ name, CategoryId, duration, description })
+            await newCourse.capitalizeName()
             res.redirect("/admin")
         } catch(err) {
             console.log(err)

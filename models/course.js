@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       Course.belongsTo(models.Category)
       Course.hasMany(models.UserCourse)
     }
+    capitalizeName() {
+      this.name = this.name.toUpperCase();
+      return this.save(); 
+    }
   }
   Course.init({
     name: DataTypes.STRING,
