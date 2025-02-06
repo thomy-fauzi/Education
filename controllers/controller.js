@@ -123,7 +123,7 @@ class Controller {
                 name
             })
 
-            res.redirect("/admin/category")
+            res.redirect("/admin")
         } catch(err) {
             console.log(err)
             res.send(err)
