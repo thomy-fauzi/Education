@@ -1,28 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <div style="background-color: rgb(216, 216, 216); padding: 10px;">
-        <a href="/admin/category">Home</a>
-        <a href="/admin/add-course">add course</a>
+        <a href="/admin">Home</a>
+        <a href="/admin/course">list course</a>
         <a href="/admin/add-category">add category</a>
     </div>
     <h1>List Category</h1>
-    <table border="1" >
+    <table border="1">
         <tr>
             <td>no</td>
             <td>Name</td>
             <td>action</td>
         </tr>
 
-        <% category.forEach((el, idx) => { %>
+        <% category.forEach((el, idx)=> { %>
             <tr>
-                <td><%= idx+1 %></td>
-                <td><%= el.name %></td>
+                <td>
+                    <%= idx+1 %>
+                </td>
+                <td>
+                    <%= el.name %>
+                </td>
                 <td>
                     <a href="/admin/category/<%= el.id %>">detail</a>
                 </td>
@@ -30,4 +36,5 @@
         <% }) %>
     </table>
 </body>
+
 </html>

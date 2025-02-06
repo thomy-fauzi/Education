@@ -46,7 +46,7 @@ class Controller {
             const courses = await Course.findAll({
                 include: [Category]
             })
-            res.render("adminCourse", { courses, formatTanggal })
+            res.render("admin/adminCourse", { courses, formatTanggal })
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -56,7 +56,7 @@ class Controller {
     static async showCategory(req, res) {
         try{
             const category = await Category.findAll()
-            res.render("category", { category })
+            res.render("admin/category", { category })
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -69,13 +69,13 @@ class Controller {
 
             const course = await Course.findOne({
                 where: {
-                    id: categoryId
+                    CategoryId: categoryId
                 }
             })
-            console.log(course.createdAt)
+            console.log(course)
             // const date = formatTanggal(course.createdAt)
 
-            res.render("course-by-categoryId", { course, formatTanggal })
+            res.render("admin/course-by-categoryId", { course, formatTanggal })
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -85,7 +85,7 @@ class Controller {
     static async formAddCourse(req, res) {
         try{
             const categories = await Category.findAll()
-            res.render("addCourse", { categories })
+            res.render("admin/addCourse", { categories })
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -105,7 +105,7 @@ class Controller {
 
     static async renderAddCategory(req, res) {
         try{
-            res.render("form-add-category")
+            res.render("admin/form-add-category")
         } catch(err) {
             console.log(err)
             res.send(err)
@@ -131,7 +131,7 @@ class Controller {
             const { id } = req.params
             const course = await Course.findByPk(id)
             const categories = await Category.findAll()
-            res.render("editCourse", { course, categories})
+            res.render("admin/editCourse", { course, categories})
         } catch(err) {
             console.log(err)
             res.send(err)
