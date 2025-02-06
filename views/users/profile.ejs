@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="background-color: rgb(216, 216, 216); padding: 10px;">
+        <a href="/user">Home</a>
+        <a href="/user/course">Course</a>
+        <a href="/user/profile">User Profile</a>
+    </div>
+    <h1>profile</h1>
+
+    <div style="display: flex; column-count: 2;">
+        <div>
+            <img src="<%= data.imgURL %>" width="80%" />
+        </div>
+        <div>
+            <div>
+                <h1>Full Name: <%= data.fullName %></h1>
+                <h1>age: <%= data.age %></h1>
+            </div>
+            <a href="/user/profile/edit/<%= data.id %>">Edit Profile</a>
+            <table border="1">
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Nama</th>
+                    <th scope="col">Descripsi</th>
+                    <th scope="col">Durasi Bimbingan</th>
+                    <th scope="col">Tanggal Update</th>
+                    <th scope="col">Action</th>
+                </tr>
+                <% userCourses.forEach((userCourse, index) => { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= userCourse.Course.name %></td>
+                        <td><%= userCourse.Course.description %></td>
+                        <td><%= userCourse.Course.duration %></td>
+                        <td><%= formatTanggal(userCourse.Course.updatedAt) %></td>
+                        <td>
+                            <a href="/user/profile/<%= userCourse.CourseId %>/delete">Delete</a>
+                        </td>
+                    </tr>
+                <% }) %>
+            </table>
+        </div>
+        
+    </div>
+</body>
+</html>
