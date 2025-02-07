@@ -184,6 +184,21 @@ class Controller {
         }
     }
 
+    static async deleteCategory(req, res) {
+        try{
+            const { categoryId } = req.params
+            await Category.destroy({
+                where: { 
+                    id: categoryId
+                }
+            })
+            res.redirect("/admin")
+        } catch(err) {
+            console.log(err)
+            res.send(err)
+        }
+    }
+
     static async formEditCourse(req, res) {
         try {
             const { id } = req.params

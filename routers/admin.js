@@ -22,6 +22,8 @@ router.post('/add-course', Controller.postAddCourse)
 router.get('/add-category', Controller.renderAddCategory)
 router.post('/add-category', Controller.postAddCategory)
 
+router.get('/delete-category/:categoryId', Controller.deleteCategory)
+
 router.get('/:id/edit', Controller.formEditCourse)
 router.post('/:id/edit', Controller.postEditCourse)
 
