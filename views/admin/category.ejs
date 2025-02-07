@@ -112,7 +112,10 @@
             <tr>
                 <td><%= idx + 1 %></td>
                 <td><%= el.name %></td>
-                <td><a href="/admin/category/<%= el.id %>">Detail</a></td>
+                <td>
+                    <a href="/admin/category/<%= el.id %>">Detail</a>
+                    <a href="/admin//delete-category/<%= el.id %>">Delete</a>
+                </td>
             </tr>
             <% }) %>
         </table>
